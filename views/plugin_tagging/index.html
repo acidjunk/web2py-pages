@@ -1,0 +1,18 @@
+<div class="plugin_tagging">
+{{=SPAN(T('Tagging'))}}<br />
+{{=form.custom.begin}}
+{{for link in links:}}
+<input type="checkbox" name="delete{{=link.id}}" /> <font style="color:#333;">{{=link.tag.name}}</font>({{=link.tag.links}})
+{{pass}}
+{{if links:}}<input type="submit" value="{{=T('del')}}"/><br />{{pass}}
+<select name="tag_db">
+	<option value="">{{=T('select')}}</option>
+	{{for tag in tags:}}
+	<option value="{{=tag.name}}">{{=tag.name}}</option>
+	{{pass}}
+</select>
+&nbsp;{{=T('or')}}&nbsp;
+<input type="text" name="tag_name" value="" size="15" />
+<input type="submit" value="{{=T('tag it')}}" />
+{{=form.custom.end}}
+</div>

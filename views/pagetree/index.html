@@ -1,0 +1,11 @@
+{{extend 'layout.html'}}
+
+<h1>{{=T("All pages")}}</h1>
+<p><b>Current language:</b> {{=T.accepted_language}}</p>
+
+{{for page in pages:}}
+	<li>{{=A(page.title,_href=URL('show/%s' % page.id))}} {{=A('[COPY PAGE]',_href=URL('copyPage/%s' % page.id))}}</li>
+{{pass}}
+
+{{=H3(T("Create new page"))}}
+{{=form}}	

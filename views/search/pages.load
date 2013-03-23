@@ -1,0 +1,18 @@
+{{if results:}}
+<div class="searchType">
+{{=H4('%s %s' % (T('Page(s) found for'), term))}}
+{{for result in results:}}
+	<div>
+		<a href="{{=result['link']}}">
+			{{=SPAN(result['title'], _class='title')}}
+			<p>
+				{{if result['summary']:}}{{if len(result['summary'])<200:}}{{=XML(result['summary'], sanitize=True)}}{{else:}}{{=XML(result['summary'][:200], sanitize=True)}}...{{pass}}{{pass}}
+			</p>
+		</a>
+	</div>
+{{pass}}
+</div>
+<script>
+	$("#loading").css("display","none");
+</script>
+{{pass}}

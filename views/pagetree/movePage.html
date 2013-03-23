@@ -1,0 +1,12 @@
+{{extend 'layout.html'}}
+
+<h1>{{=T('Move page')}}: "{{=my_page.title}}"</h1><br />
+{{=T('Select new parent:')}}<br /><br />
+<span style="line-height:170%;">
+<a href="{{=URL('movePage',args=(my_page.id,0))}}" style="text-decoration:none;">[0]<strong>[0]</strong> {{=T('Top Item')}}</a><br />
+{{for page in pages:}}
+	{{if page.id == my_page.id:}} <strike>[{{=page.parent}}]<strong>[{{=page.id}}]</strong> {{=page.title}}</strike><br />
+	{{elif page.parent == my_page.id:}} <strike>[{{=page.parent}}]<strong>[{{=page.id}}]</strong> {{=page.title}}</strike><br />
+	{{else:}} <a href="{{=URL('movePage',args=(my_page.id,page.id))}}" style="text-decoration:none;">[{{=page.parent}}]<strong>[{{=page.id}}]</strong> {{=page.title}}</a><br />{{pass}}
+{{pass}}
+</span>

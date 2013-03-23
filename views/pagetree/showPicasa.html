@@ -1,0 +1,86 @@
+{{extend 'layout.html'}}
+<div class="pagePicasa">
+	{{if len(photos) > 6:}}
+	<div id="picPrev"></div>
+	<div id="picNext"></div>
+	{{pass}}
+	{{for x in range(0,len(photos)):}}
+		{{if x > 5:}}
+			{{if (x+1) % 6 == 0:}}
+				<img id="{{=x}}" class="googlepicasa" src="{{=photos[x].media.thumbnail[0].url.replace('s72','s110-c')}}" title="{{=photos[x].media.thumbnail[0].url.replace('s72','s680')}}" border="0" style="display:none;"/>
+			{{else:}}
+				<img id="{{=x}}" class="googlepicasa" src="{{=photos[x].media.thumbnail[0].url.replace('s72','s110-c')}}" title="{{=photos[x].media.thumbnail[0].url.replace('s72','s680')}}" border="0" style="display:none;"/>
+			{{pass}}
+		{{else:}}
+			{{if x == 5:}}
+				<img id="{{=x}}" class="googlepicasa" src="{{=photos[x].media.thumbnail[0].url.replace('s72','s110-c')}}" title="{{=photos[x].media.thumbnail[0].url.replace('s72','s680')}}" border="0" style="display:inline; border:0;"/>
+			{{else:}}
+				<img id="{{=x}}" class="googlepicasa" src="{{=photos[x].media.thumbnail[0].url.replace('s72','s110-c')}}" title="{{=photos[x].media.thumbnail[0].url.replace('s72','s680')}}" border="0" style="display:inline;"/>
+			{{pass}}
+		{{pass}}
+	{{pass}}
+	<div style="clear:both;"></div>
+</div>
+<a href="{{=photos[0].media.thumbnail[0].url.replace('s72','s2000')}}" rel="googlePicasa" class="picLink"><img id="picHeader" border="0" src="{{=photos[0].media.thumbnail[0].url.replace('s72','s680')}}"></a>
+<script type="text/javascript">
+$(document).ready(function() {
+  	$("a[rel=googlePicasa]").fancybox({
+  		'transitionIn'  :   'elastic',
+  	    'transitionOut' :   'elastic'
+  	});
+});
+
+$(".googlepicasa").click(function(){
+  	var thisHref = $(this).attr("title");
+  	var thisRel = thisHref.replace('s72','s2000');
+  	$("#picHeader").attr("src",thisHref);
+  	$(".picLink").attr("href",thisRel);
+});
+
+$("#picPrev").click(function(){
+    var neededArray = [];
+    $(".googlepicasa").each(function (index, domEle) {
+        if($(this).css('display') != 'none') {
+        	maxID=index;
+            var neededID = (index - 6);
+            if(neededID >= 0) {
+                neededArray.push(index);
+            }
+        }
+    });
+    $.each(neededArray, function(index, value) { 
+        neededID = (value - 6);
+        $(".googlepicasa").eq(value).css('display', 'none');
+        $(".googlepicasa").eq(neededID).css('display', 'inline');
+        if(neededID==0) {
+        	$(".googlepicasa").eq(5).css('border-right', '0');
+        }
+        if(neededID == (maxID - 6) && neededID > 5) {
+        	$(".googlepicasa").eq(neededID).css('border-right', '0');
+        }
+    });
+
+});
+
+$("#picNext").click(function(){
+    var maxID = $(".googlepicasa").length;
+    var neededArray = [];
+    $(".googlepicasa").each(function (index, domEle) {
+        if($(this).css('display') != 'none') {
+            var neededID = (index + 6);
+            if(neededID < maxID) {
+                neededArray.push(index);
+            }
+        }
+    });
+    $.each(neededArray, function(index, value) { 
+        neededID = (value + 6);
+        $(".googlepicasa").css('border-right', '4px solid #FFF');
+        $(".googlepicasa").eq(value).css('display', 'none');
+        $(".googlepicasa").eq(neededID).css('display', 'inline');
+        if((neededID + 1) % 6 == 0 || (neededID + 1) == maxID) {
+        	$(".googlepicasa").eq(neededID).css('border-right', '0');
+        }
+    });
+});
+</script>

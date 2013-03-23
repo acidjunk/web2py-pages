@@ -1,0 +1,73 @@
+{{extend 'layout.html'}}
+
+<script type="text/javascript" src="{{=URL('static','plugin_wiki/markitup/jquery.markitup.pack.js')}}"></script>
+<script type="text/javascript" src="{{=URL('static','plugin_wiki/markitup/sets/markmin/set.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{=URL('static','plugin_wiki/markitup/skins/markitup/style.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{=URL('static','plugin_wiki/markitup/sets/markmin/style.css')}}" />
+<script src="{{=URL('static','plugin_wiki/elrte-1.0rc4/js/elrte.min.js')}}" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="{{=URL('static','plugin_wiki/elrte-1.0rc4/css/elrte.full.css')}}" type="text/css" media="screen" charset="utf-8">
+
+{{=form}}
+
+<script>
+jQuery(document).ready(function() {
+	  jQuery('#page_text_body').css('width','545px').css('height','250px').markItUp(mySettings);
+  
+});
+</script>
+
+<a href="#" onclick="jQuery('#plugin_wiki_help').slideToggle(); return false;">help</a>
+<div id="plugin_wiki_help" class="hidden">
+<h2>Help with syntax</h2>
+<pre>
+# title
+## subtitle
+### subsubtitle
+paragraph with **bold**, ''italic'' and ``code``
+[["a link" http://example.com]], [[a_anchor]] and [["a link to" #a_anchor]]
+[["an image" http://example.com left 200px]]
+
+- item
+- item
+
++ item 1
++ item 2
+
+-----
+blockquote
+-----
+
+-----
+1 | 2
+3 | 4
+-----
+
+-----
+extra space
+-----
+````:space
+
+
+``
+def index():
+    return 'hello'
+``:code_python
+
+``
+name: create
+``:widget
+
+``
+name: youtube
+code: x1w8hKTJ2Co
+``:widget
+
+Here is a list of widget names
+
+- read, create, update, search, select, jqgrid
+- youtube, vimeo, mediaplayer
+- comments, tags, tag_cloud
+
+Consult models/plugin_wiki.py for a list of parameters
+</pre>
+</div>

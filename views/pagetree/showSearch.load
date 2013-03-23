@@ -1,0 +1,8 @@
+{{=message}}
+{{=form}}
+{{if result:}}
+<script>
+location.href= '{{=URL('search', 'quick', args=(form.vars.name,'pages'), extension=False)}}';
+</script>
+{{else:}}
+{{pass}}

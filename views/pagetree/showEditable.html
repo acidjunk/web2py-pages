@@ -1,0 +1,441 @@
+{{extend 'layout.html'}}
+{{inAddress=False}}
+{{hasFacebook=False}}
+{{hasTwitter=False}}
+
+	<script type="text/javascript" src="../../static/js/jquery-swapsies.js"></script>	
+	<script>
+		/*function swappen(who,target,link){
+			event.preventDefault();
+
+			$.ajax({
+				  url: link,
+				  success: function(data) {
+						$(who).swap({
+							target: target,
+							opacity: "0.5",
+							speed: 200,
+							callback: function() {
+							}
+						});
+				  }
+				});
+		}*/
+	</script>
+
+
+<h1>{{=page.title}}</h1>
+{{=button(T('view live version'),'show',page.id)}}
+{{=button(T('edit page title'),'edit',page.id)}}
+{{=button(T('move page'),'movePage',page.id)}}
+{{=button(T('sort pages'),'sortPages',page.id)}}
+{{=BR()}}
+
+{{for i in range(0,len(page_items)):}}	
+	{{if page_items[i].tablename=="page_text":}}
+		<div class="pageText" id="{{=page_items[i].order_nr}}">
+		{{if content[i].title:}} 
+			{{=H2(content[i].title)}}
+		{{pass}}
+		{{if content[i].text_type=="html":}}
+			{{=XML(content[i].body)}}
+			{{=button(T('edit'),'editHtml',(page.id,content[i].id))}}						
+		{{elif content[i].text_type=="markmin":}}
+			{{=MARKMIN(content[i].body, extra={'space':lambda code: '<br>', 'macro':lambda code: includeMacro(code)})}}
+			{{=button(T('edit'),'editMarkmin',(page.id,content[i].id))}}
+		{{else:}}
+			{{=content[i].body}}
+			{{=button(T('edit'),'editText',(page.id,content[i].id))}}
+		{{pass}}
+		{{=button(T('delete'),'deletePageItem',(page.id,page_items[i].id))}}
+		
+		<!-- start switchen van position -->
+		[<a href="#nil" onclick="jQuery('#form{{=page_items[i].id}}').slideToggle();">{{=T('change order')}}</a>]
+			<div id="form{{=page_items[i].id}}" style="display:none">
+				{{for page_item in page_items:}}
+					{{if page_item.id != page_items[i].id:}}
+						{{=button(T(str(page_item.order_nr)),'sortOrderNr',(page.id,page_items[i].id,page_item.order_nr))}}
+					{{pass}}			
+				{{pass}}
+				{{=button(T('reset order_nrs'),'resetOrderNr',(page.id))}}
+			</div>	
+		<!-- eind switchen van position -->		
+		
+		</div>
+	{{elif page_items[i].tablename=="page_image":}}		
+		<div class="pageImage">
+			<div>
+		{{if content[i].hasLightbox:}}		
+			<a href="{{=URL('download',args=content[i].image)}}" rel="pageImage" title="{{=content[i].title}}">
+		{{pass}}  
+		<img class="pageImage" src="{{=URL('download',args=content[i].image)}}" alt="{{=content[i].title}}" />
+		{{if content[i].hasLightbox:}}
+			</a>		
+		{{pass}}
+			</div>				
+		{{=button(T('edit'),'editImage',(page.id,content[i].id))}}
+		{{=button(T('delete'),'deletePageItem',(page.id,page_items[i].id))}}
+		
+		<!-- start switchen van position -->
+		[<a href="#nil" onclick="jQuery('#form{{=page_items[i].id}}').slideToggle();">{{=T('change order')}}</a>]
+			<div id="form{{=page_items[i].id}}" style="display:none">
+				{{for page_item in page_items:}}
+					{{if page_item.id != page_items[i].id:}}
+						{{=button(T(str(page_item.order_nr)),'sortOrderNr',(page.id,page_items[i].id,page_item.order_nr))}}
+					{{pass}}			
+				{{pass}}
+				{{=button(T('reset order_nrs'),'resetOrderNr',(page.id))}}
+			</div>	
+		<!-- eind switchen van position -->
+		
+		</div>	
+	{{elif page_items[i].tablename=="page_file":}}
+		<div class="pageFile">
+		{{=A('download', _href=URL('download',args=content[i].file_upload))}}
+		{{=button(T('edit'),'editFile',(page.id,content[i].id))}}
+		{{=button(T('delete'),'deletePageItem',(page.id,page_items[i].id))}}
+		
+		<!-- start switchen van position -->
+		[<a href="#nil" onclick="jQuery('#form{{=page_items[i].id}}').slideToggle();">{{=T('change order')}}</a>]
+			<div id="form{{=page_items[i].id}}" style="display:none">
+				{{for page_item in page_items:}}
+					{{if page_item.id != page_items[i].id:}}
+						{{=button(T(str(page_item.order_nr)),'sortOrderNr',(page.id,page_items[i].id,page_item.order_nr))}}
+					{{pass}}			
+				{{pass}}
+				{{=button(T('reset order_nrs'),'resetOrderNr',(page.id))}}
+			</div>	
+		<!-- eind switchen van position -->
+		
+		</div>
+	{{elif page_items[i].tablename=="page_form":}}
+		<div class="pageForm">
+		{{try:}}
+        	{{page_id=int(request.args(0))}}
+    	{{except:}}
+        	{{page=db(db.pagetree.url==request.args(0)).select().first() or redirect(error)}}
+        	{{page_id=page.id}}
+        {{pass}}	
+		
+		{{if content[i].form_type == 'Support':}}
+			{{requestForm = 'support.load'}}
+			{{title = 'Vraag support aan'}}
+		{{elif content[i].form_type == 'Demo':}}
+			{{requestForm = 'demo.load'}}
+			{{title = 'Vraag een demo aan'}}	
+		{{elif content[i].form_type == 'Offers':}}
+			{{requestForm = 'offers.load'}}
+			{{title = 'Vraag een offerte aan'}}		
+		{{elif content[i].form_type == 'Question':}}
+			{{requestForm = 'question.load'}}
+			{{title = 'Stel ons een vraag'}}		
+		{{else:}}
+			{{requestForm = 'contact.load'}}
+			{{title = 'Contact formulier'}}
+		{{pass}}
+		[<a href="{{=URL('contact',requestForm,args=[page_id])}}" title="{{=title}}">FORM: {{=content[i].form_type}}</a>]
+		{{=button(T('edit'),'editForm',(page.id,content[i].id))}}
+		{{=button(T('delete'),'deletePageItem',(page.id,page_items[i].id))}}
+	
+		<!-- start switchen van position -->
+		[<a href="#nil" onclick="jQuery('#form{{=page_items[i].id}}').slideToggle();">{{=T('change order')}}</a>]
+			<div id="form{{=page_items[i].id}}" style="display:none">
+				{{for page_item in page_items:}}
+					{{if page_item.id != page_items[i].id:}}
+						{{=button(T(str(page_item.order_nr)),'sortOrderNr',(page.id,page_items[i].id,page_item.order_nr))}}
+					{{pass}}			
+				{{pass}}
+				{{=button(T('reset order_nrs'),'resetOrderNr',(page.id))}}
+			</div>	
+		<!-- eind switchen van position -->
+		
+		</div>		
+	{{elif page_items[i].tablename=="page_link":}}
+		<div class="pageLink">
+		{{=A(content[i].title, _href=content[i].link, _target='_blank')}}
+		{{=button(T('edit'),'editLink',(page.id,content[i].id))}}
+		{{=button(T('delete'),'deletePageItem',(page.id,page_items[i].id))}}
+		
+		<!-- start switchen van position -->
+		[<a href="#nil" onclick="jQuery('#form{{=page_items[i].id}}').slideToggle();">{{=T('change order')}}</a>]
+			<div id="form{{=page_items[i].id}}" style="display:none">
+				{{for page_item in page_items:}}
+					{{if page_item.id != page_items[i].id:}}
+						{{=button(T(str(page_item.order_nr)),'sortOrderNr',(page.id,page_items[i].id,page_item.order_nr))}}
+					{{pass}}			
+				{{pass}}
+				{{=button(T('reset order_nrs'),'resetOrderNr',(page.id))}}
+			</div>	
+		<!-- eind switchen van position -->
+		</div>
+	{{elif page_items[i].tablename=="page_faq":}}
+		<div class="pageFAQ">
+		Q: {{= content[i].question }} <br>
+		A: {{= content[i].answer }}
+		{{=button(T('edit'),'editFAQ',(page.id,content[i].id))}}
+		{{=button(T('delete'),'deletePageItem',(page.id,page_items[i].id))}}
+		
+		<!-- start switchen van position -->
+		[<a href="#nil" onclick="jQuery('#form{{=page_items[i].id}}').slideToggle();">{{=T('change order')}}</a>]
+			<div id="form{{=page_items[i].id}}" style="display:none">
+				{{for page_item in page_items:}}
+					{{if page_item.id != page_items[i].id:}}
+						{{=button(T(str(page_item.order_nr)),'sortOrderNr',(page.id,page_items[i].id,page_item.order_nr))}}
+					{{pass}}			
+				{{pass}}
+				{{=button(T('reset order_nrs'),'resetOrderNr',(page.id))}}
+			</div>	
+		<!-- eind switchen van position -->
+		</div>
+	{{elif page_items[i].tablename=="page_address":}}
+		{{if not inAddress:}}
+			{{inAddress=True}}
+			<div class="showAddress">
+		{{pass}}
+		<div class="pageAddress">
+			<div class="pageAddressDetails">
+				<b>{{=content[i].name}}</b><br>
+				{{if content[i].address is not '':}}
+				{{=content[i].address}}<br>
+				{{pass}}
+				{{if content[i].postcode is not '':}}
+				{{=content[i].postcode}} &nbsp;
+				{{pass}}
+				{{if content[i].city is not '':}}
+				{{=content[i].city}}<br>
+				{{pass}}
+				{{if content[i].website is not '':}}
+				<a href="{{=content[i].website}}">{{=content[i].website}}</a><br>
+				{{pass}}
+				{{if content[i].email is not '':}}
+				<a href="mailto: {{=content[i].email}}">{{=content[i].email}}</a><br>
+				{{pass}}
+				{{if content[i].phone is not '':}}
+				{{=content[i].phone}}<br>
+				{{pass}}		
+			</div>
+			<div style="clear:both;"></div>
+
+		{{=button(T('edit'),'editAddress',(page.id,content[i].id))}}
+		{{=button(T('delete'),'deletePageItem',(page.id,page_items[i].id))}}
+		
+		<!-- start switchen van position -->
+		[<a href="#nil" onclick="jQuery('#form{{=page_items[i].id}}').slideToggle();">{{=T('change order')}}</a>]
+			<div id="form{{=page_items[i].id}}" style="display:none">
+				{{for page_item in page_items:}}
+					{{if page_item.id != page_items[i].id:}}
+						{{=button(T(str(page_item.order_nr)),'sortOrderNr',(page.id,page_items[i].id,page_item.order_nr))}}
+					{{pass}}			
+				{{pass}}
+				{{=button(T('reset order_nrs'),'resetOrderNr',(page.id))}}
+			</div>	
+		<!-- eind switchen van position -->
+		</div>	
+		{{if (i+1)==len(page_items):}}
+			<!-- end Address -->
+			</div>
+			<div style="clear:both;"></div>
+			{{inAddress=False}}
+		{{elif page_items[i+1].tablename != "page_address":}}
+			<!-- end address -->
+			</div>
+			<div style="clear:both;"></div>
+			{{inAddress=False}}
+		{{pass}}
+	{{elif page_items[i].tablename=="page_picasa":}}
+		<div class="pagePicasa">
+		<strong>Google Picasa</strong><br>
+		UserID={{=content[i].userid}}<br>
+		AlbumID={{=content[i].albumid}}<br>
+		{{=button(T('edit'),'editPicasa',(page.id,content[i].id))}}						
+		{{=button(T('delete'),'deletePageItem',(page.id,page_items[i].id))}}
+		
+		<!-- switchen van position -->
+		[<a href="#nil" onclick="jQuery('#form{{=page_items[i].id}}').slideToggle();">{{=T('change order')}}</a>]
+			<div id="form{{=page_items[i].id}}" style="display:none">
+				{{for page_item in page_items:}}
+					{{if page_item.id != page_items[i].id:}}
+						{{=button(T(str(page_item.order_nr)),'sortOrderNr',(page.id,page_items[i].id,page_item.order_nr))}}
+					{{pass}}			
+				{{pass}}
+				{{=button(T('reset order_nrs'),'resetOrderNr',(page.id))}}
+			</div>	
+		</div>
+	{{elif page_items[i].tablename=="page_youtube":}}
+		<div class="pageYoutube">
+		{{if content[i].title:}}{{=H2(content[i].title)}}{{pass}}
+		<iframe width="560" height="420" src="http://www.youtube.com/embed/{{=content[i].youtube}}?rel=0" frameborder="0" allowfullscreen></iframe>
+		{{=button(T('edit'),'editYoutube',(page.id,content[i].id))}}						
+		{{=button(T('delete'),'deletePageItem',(page.id,page_items[i].id))}}
+		
+		<!-- switchen van position -->
+		[<a href="#nil" onclick="jQuery('#form{{=page_items[i].id}}').slideToggle();">{{=T('change order')}}</a>]
+			<div id="form{{=page_items[i].id}}" style="display:none">
+				{{for page_item in page_items:}}
+					{{if page_item.id != page_items[i].id:}}
+						{{=button(T(str(page_item.order_nr)),'sortOrderNr',(page.id,page_items[i].id,page_item.order_nr))}}
+					{{pass}}			
+				{{pass}}
+				{{=button(T('reset order_nrs'),'resetOrderNr',(page.id))}}
+			</div>	
+		</div>
+	{{elif page_items[i].tablename=="page_facebook":}}
+		{{hasFacebook=content[i].facebook}}
+		{{facebookID=i}}
+	{{elif page_items[i].tablename=="page_twitter":}}
+		{{hasTwitter=content[i].twitter}}
+		{{twitterID=i}}
+	{{elif page_items[i].tablename=="page_slider":}}
+        <div class="slider-wrapper theme-default" style="width: {{=content[i].width}}px !important;">
+            <div id="slider_{{=content[i].id}}" class="nivoSlider">
+			{{for x in ('image1','image2', 'image3', 'image4', 'image5', 'image6', 'image7', 'image8', 'image9', 'image10'):}}
+				{{if content[i][x]:}}
+				<img src="{{=URL('static','images/slider', args=content[i][x])}}" alt="" style="max-width: {{=content[i].width}}px !important; max-height: {{=content[i].height}}px !important;"/>
+                {{pass}}
+            {{pass}}
+            </div>
+        </div>
+    <script type="text/javascript" src="{{=URL('static','js/nivoslider/jquery.nivo.slider.js')}}"></script>
+    <script type="text/javascript">
+    $(window).load(function() {
+        $('#slider_{{=content[i].id}}').nivoSlider();
+    });
+    </script>
+	{{=button(T('edit'),'editSlider',(page.id,content[i].id))}}
+	{{=button(T('delete'),'deletePageItem',(page.id,page_items[i].id))}}
+		
+		<!-- start switchen van position -->
+		[<a href="#nil" onclick="jQuery('#form{{=page_items[i].id}}').slideToggle();">{{=T('change order')}}</a>]
+		<div id="form{{=page_items[i].id}}" style="display:none">
+			{{for page_item in page_items:}}
+				{{if page_item.id != page_items[i].id:}}
+					{{=button(T(str(page_item.order_nr)),'sortOrderNr',(page.id,page_items[i].id,page_item.order_nr))}}
+				{{pass}}			
+			{{pass}}
+			{{=button(T('reset order_nrs'),'resetOrderNr',(page.id))}}
+		</div>	
+		<!-- eind switchen van position -->
+	{{pass}}
+{{pass}}
+
+{{if hasFacebook or hasTwitter:}}
+	<div class="showSocial">
+	{{if hasFacebook:}}
+		<div class="pageFacebook">
+		{{=button(T('edit'),'editFacebook',(page.id,content[facebookID].id))}}						
+		{{=button(T('delete'),'deletePageItem',(page.id,page_items[facebookID].id))}}
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+		<div class="fb-like-box" data-href="{{=hasFacebook}}" data-border-color="#202020" data-width="480" data-height="300" data-colorscheme="dark" data-show-faces="true" data-stream="true" data-header="false"></div>
+		</div>
+	{{pass}}
+	{{if hasTwitter:}}
+		{{=button(T('edit'),'editTwitter',(page.id,content[twitterID].id))}}						
+		{{=button(T('delete'),'deletePageItem',(page.id,page_items[twitterID].id))}}
+		<div class="pageTwitter">
+		<script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+		<script>
+		new TWTR.Widget({
+		  version: 2,
+		  type: 'profile',
+		  rpp: 4,
+		  interval: 30000,
+		  width: 480,
+		  height: 300,
+		  theme: {
+		    shell: {
+		      background: '#202020',
+		      color: '#ffffff'
+		    },
+		    tweets: {
+		      background: '#000000',
+		      color: '#ffffff',
+		      links: '#ADB224'
+		    }
+		  },
+		  features: {
+		    scrollbar: false,
+		    loop: false,
+		    live: false,
+		    behavior: 'all'
+		  }
+		}).render().setUser('{{=hasTwitter}}').start();
+		</script>
+		</div>
+	{{pass}}
+	</div><div style="clear:both;"></div>
+{{pass}}
+
+{{=BR()}}
+[<a href="#nil" onclick="jQuery('#form_text').slideToggle();">{{=T('+ text')}}</a>]
+<div id="form_text" style="display:none">
+	<h3>{{=T("Choose text format")}}</h3>
+	<div class="pageLink">{{=A('html', _href=URL('editHtml',args=(page.id,0)))}}</div>
+	<div class="pageLink">{{=A('markmin', _href=URL('editMarkmin',args=(page.id,0)))}}</div>
+	<div class="pageLink">{{=A('plain', _href=URL('editText',args=(page.id,0)))}}</div>
+</div>
+{{=button(T('+ image'),'editImage',(page.id,0))}}
+{{=button(T('+ file'),'editFile',(page.id,0))}}
+{{=button(T('+ link'),'editLink',(page.id,0))}}
+{{=button(T('+ faq'),'editFAQ',(page.id,0))}}
+{{=button(T('+ addresss'),'editAddress',(page.id,0))}}
+{{=button(T('+ picasa'),'editPicasa',(page.id,0))}}
+{{=button(T('+ youtube'),'editYoutube',(page.id,0))}}
+{{=button(T('+ facebook'),'editFacebook',(page.id,0))}}
+{{=button(T('+ twitter'),'editTwitter',(page.id,0))}}
+{{=button(T('+ imageSlider'),'editSlider',(page.id,0))}}
+{{=button(T('+ form'),'editForm',(page.id,0))}}
+{{=button(T('+ fbcomments'),'editFBComments',(page.id,0))}}
+
+{{if page_children:}}
+<div class="pageSubmenu">
+{{=SPAN(H2(T('Sub pages')))}}
+{{if page.childrenTitle:}}{{=H3(page.childrenTitle)}}{{pass}}
+<ul>
+	{{for child in page_children:}}
+		<li>{{=A(child.title,_href=URL('show/%s' % child.url))}}</li>
+	{{pass}}
+</ul>
+</div>
+{{pass}}
+
+[<a href="#nil" onclick="jQuery('#form').slideToggle();">{{=T('+ page')}}</a>]
+<div id="form" style="display:none">
+<h3>{{=T("Add sub page")}}</h3>
+{{=form}}
+</div>
+
+{{for i in range(0,len(page_items)):}}	
+	{{if page_items[i].tablename=="page_fbcomments":}}
+		<div class="pageFBComments">
+			<h2>FBComments</h2>
+			{{=button(T('edit'),'editFBComments',(page.id,content[i].id))}}
+			{{=button(T('delete'),'deletePageItem',(page.id,page_items[i].id))}}
+		</div>
+	{{pass}}
+{{pass}}
+
+{{if auth.user_id:}}<div style="clear:both;"></div>{{=plugin_tagging('pagetree', page.id)}}{{pass}}
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $("a[rel=iframe]").fancybox({
+        'type': 'iframe',
+        'width': 600,
+        'height': 450,
+        'scrolling': 'auto',
+        'autoDimensions': true,
+        'showNavArrows': false,
+        'hideOnOverlayClick': true,
+        'transitionIn'  :   'elastic',
+        'transitionOut' :   'elastic',
+        'overlayColor' :    '#FFFFFF'
+    });
+});
+</script>

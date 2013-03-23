@@ -1,0 +1,10 @@
+{{extend 'layout.html'}}
+{{=H4(T('Search'))}}
+{{=message}}
+{{=form}}
+{{if result:}}
+<script>
+location.href= '{{=URL('search', 'quick.html',args=(form.vars.name,'pages'))}}';
+</script>
+{{else:}}
+{{pass}}

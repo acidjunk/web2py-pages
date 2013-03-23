@@ -1,0 +1,11 @@
+{{extend 'layout.html'}}
+
+{{=H2(title)}}
+
+{{=H4('Default')}}
+<p>{{=T('some admin stuff for the pages')}}</p>
+<ul>
+{{=LI(A('Group management', _href=URL('pagetree', 'adminPanel')))}}
+</ul>
+
+<br>

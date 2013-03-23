@@ -1,0 +1,9 @@
+{{extend 'layout2.html'}}
+
+{{=H4('%s %s' % (T('Search results for'), term))}}
+
+{{=DIV(H4(T('No results found (yet)...')), _id='loading')}}
+
+{{for type in types:}}
+	{{=LOAD('search', type, args=term, ajax=True)}}
+{{pass}}
