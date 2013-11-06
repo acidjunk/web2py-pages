@@ -1,0 +1,5 @@
+<link rel="stylesheet" type="text/css" href="{{=URL('static','plugin_layouts/layouts/vertebrate/style.css')}}">
+<body style="background-image: none; margin:10px;">
+<h1>{{=T("Request received")}}</h1>
+{{=P(T("Thank you for contacting us. You will receive an conformation email of your request soon. We will process the request as soon as possible."))}}
+</body>

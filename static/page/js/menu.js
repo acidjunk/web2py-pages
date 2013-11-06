@@ -1,0 +1,10 @@
+$(".site-nav li:nth-child(1) a").addClass("m1");
+$(".site-nav li:nth-child(2) a").addClass("m2");
+$(".site-nav li:nth-child(3) a").addClass("m3");
+$(".site-nav li:nth-child(4) a").addClass("m4");
+$(".site-nav li:nth-child(5) a").addClass("m5");
+$(".site-nav li:nth-child(6) a").addClass("m6");
+$(".site-nav li:nth-child(7) a").addClass("m7");
+$(".site-nav li:nth-child(8) a").addClass("m8");
+$(".site-nav li:last").addClass("last");
+$(".footer-nav li:last").addClass("last");

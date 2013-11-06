@@ -1,0 +1,7 @@
+<link rel="stylesheet" type="text/css" href="{{=URL('static','page/css/style.css')}}">
+<body style="background-image: none; margin:10px;">
+<h1>{{=T("Request an Offer")}}</h1>
+<br>
+{{=P(T("Fill out the form and we will send you an offer within one businessday"))}}
+{{=form}}
+</div>

@@ -46,4 +46,5 @@ def tag_cloud():
     if tags:
         mc = max([tag.links for tag in tags])
     return DIV(_class='plugin_tagging_tag_cloud',
-               *[SPAN(A(tag.name, _href=URL('search', 'quick', args=tag.name, extension=False))+BR()) for tag in tags])
+               *[SPAN(A(tag.name, _href=URL('search', 'quick', args=tag.name, extension=False))+' ',_style='font-size:%sem' \
+                          % (0.8+1.0*tag.links/mc)) for tag in tags])

@@ -1,7 +1,32 @@
 web2py-pages
 ============
 
-Pages module for web2py which gives you a good starting point for any type of CMS
+Pages module for web2py which gives you a good starting point for any type of CMS.
+It features a tree of pages with sluggified (URL friendly) names. Pages can consist out of items. Current page items:
+markmin text, html text, plain text, image, imageslider, photoalbum, FAQ, address, 
+file upload, links and a couple of pre defined forms.
+
+
+Changelog:
+-----
+Version 1.0 RC1
+- Added CKeditor and markmin
+- Added tagging
+- Added adminMenu
+- Added an easy way to create a test page with all items
+- Added page copy functionality
+- Added NL translation
+- Fixed language settings; en-us is default
+- Moved loading of the javascript deps to the view, so no change in the web2py layout is needed.
+- Nivoslider, Fancybox, Google Picasa Photoalbum have working views
+- It's ready to use as a web2py plugin
+
+Known problems:
+- not SQL strict
+- some jquery problems with the other javascript deps and the latest web2py stable (2.7.1). 
+A workround is available on most places by downgrading jquery to 1.8.0
+
+
 
 Version  0.9
 

@@ -1,0 +1,22 @@
+Page module with an example app
+
+
+In models/db.py > remove this from line 14: ,check_reserved=['all']
+
+------------------------------------------------------------------
+- Download icons from: 
+
+These icon sets are licensed under a Creative Commons Attribution 3.0 License. The icons may not be resold, sub-licensed, rented, transferred or otherwise made available for use. Please link to this page on fatcow.com if you would like to spread the word.
+
+http://www.fatcow.com/fatcow-icons/fatcow-hosting-icons-3500.zip 
+
+and unpack them in: [app_name]/static/page/images/icons
+------------------------------------------------------------------
+- Download extensions from: 
+
+License :Free for non-commercial use.
+
+http://www.iconhot.com/icon/zip/simplexity-file%20png.zip 
+
+and unpack them in: [app_name]/static/page/images/extensions 
+------------------------------------------------------------------
