@@ -12,3 +12,5 @@ ckeditor.define_tables()
 # db.newsletter.agenda_content.widget = ckeditor.widget
 # db.newsletter_items.content.widget = ckeditor.widget
 # db.newsletter_boxes.content.widget = ckeditor.widget
+
+db.page_text.type.widget = ckeditor.widget
