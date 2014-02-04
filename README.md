@@ -6,6 +6,23 @@ It features a tree of pages with sluggified (URL friendly) names. Pages can cons
 markmin text, html text, plain text, image, imageslider, photoalbum, FAQ, address, 
 file upload, links and a couple of pre defined forms.
 
+Installation:
+To try it; just create a new app from the web2py admin and copy the content of this github folder over it.
+Then remove the checking for strict keyword in db.py:
+OLD line:
+    db = DAL('sqlite://storage.sqlite',pool_size=1,check_reserved=['all'])
+NEW line:
+    db = DAL('sqlite://storage.sqlite',pool_size=1)
+
+Todo:
+- Add the extra styling info in one.css file
+- Test
+- Clean up older web2py constructs
+
+Needed dependencies:
+- gdata for google picasa
+- PIL for scaling and thumbs (ImageMagick support will be added)
+
 
 Changelog:
 -----
@@ -25,9 +42,7 @@ Known problems:
 - not SQL strict
 - some jquery problems with the other javascript deps and the latest web2py stable (2.7.1). 
 A workround is available on most places by downgrading jquery to 1.8.0
-
-
-
+----
 Version  0.9
 
 Current State: This is a work in progress. 
@@ -39,17 +54,5 @@ Already works:
 - Menu 
 - Tested Against web2py 2.4.1
 
-Installation:
-To try it; just create a new app from the web2py admin and copy the content of this github folder over it.
 
-Todo:
-- Add the extra styling info in one.css file
-- Add the missing java libs (Fancybox, NivoSlider,FCKeditor) 
-- Fix headers for the extra java libs in a smart way
-- Test
-- Clean up older web2py constructs
-
-Needed dependencies:
-- gdata for google picasa
-- PIL for scaling and thumbs (ImageMagick support will be added)
 
