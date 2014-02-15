@@ -8,13 +8,9 @@ file upload, links and a couple of pre defined forms.
 
 Installation:
 To try it; just create a new app from the web2py admin and copy the content of this github folder over it.
-Then remove the checking for strict keyword in db.py:
-OLD line:
-    db = DAL('sqlite://storage.sqlite',pool_size=1,check_reserved=['all'])
-NEW line:
-    db = DAL('sqlite://storage.sqlite',pool_size=1)
 
 Todo:
+- Create a .w2p release
 - Add the extra styling info in one.css file
 - Test
 - Clean up older web2py constructs
@@ -25,6 +21,10 @@ Needed dependencies:
 
 
 Changelog:
+-----
+Version 1.0 RC2
+- Fixed the issue with the DAL and a reserved keyword 'page' error. The app should will now install without touching any core web2py welcome/ application file
+
 -----
 Version 1.0 RC1
 - Added CKeditor and markmin

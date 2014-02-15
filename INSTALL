@@ -1,7 +1,6 @@
 Page module with an example app
 
-
-In models/db.py > remove this from line 14: ,check_reserved=['all']
+To try it; just create a new app from the web2py admin and copy the content of this github folder over it.
 
 ------------------------------------------------------------------
 - Download icons from: 
