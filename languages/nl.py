@@ -1,4 +1,4 @@
-# coding: utf8
+# -*- coding: utf-8 -*-
 {
 '!langcode!': 'nl',
 '!langname!': 'Nederlands',
@@ -135,6 +135,7 @@
 'Editing file "%s"': 'Bewerk bestand "%s"',
 'Email and SMS': 'E-mail en SMS',
 'enter a number between %(min)g and %(max)g': 'geef een getal tussen %(min)g en %(max)g',
+'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'enter an integer between %(min)g and %(max)g': 'geef een integer tussen %(min)g en %(max)g',
 'Error logs for "%(app)s"': 'Error logs voor "%(app)s"',
 'errors': 'errors',
@@ -319,6 +320,7 @@
 'There are no views': 'Er zijn geen views',
 'these files are served without processing, your images go here': 'Deze bestanden worden geserveerd zonder verdere verwerking, je afbeeldingen horen hier',
 'This App': 'Deze App',
+'This email already has an account': 'This email already has an account',
 'This is a copy of the scaffolding application': 'Dit is een kopie van de steiger-applicatie',
 'This is the %(filename)s template': 'Dit is de %(filename)s template',
 'Ticket': 'Ticket',
