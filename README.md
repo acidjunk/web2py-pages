@@ -7,12 +7,14 @@ markmin text, html text, plain text, image, imageslider, photoalbum, FAQ, addres
 file upload, links and a couple of pre defined forms.
 
 Installation:
-To try it; just create a new app from the web2py admin and copy the content of this github folder over it.
+To try it; just clone it in a web2py/applications/ folder.
+E.g.: git clone git@github.com:acidjunk/web2py-pages.git pages
 
 Todo:
 - Add the extra styling info in one.css file
 - Test
 - Clean up older web2py constructs
+- Fix language problem
 
 Needed dependencies:
 - gdata for google picasa
