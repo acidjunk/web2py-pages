@@ -21,8 +21,8 @@ Needed dependencies:
 You can also use the w2p files (you'll still need the deps.)
 
 w2p:
-https://dl.dropboxusercontent.com/u/20756661/web2py-pages-without-languages.w2p
-https://dl.dropboxusercontent.com/u/20756661/web2py-pages-with-languages.w2p
+https://dl.dropboxusercontent.com/u/20756661/web2py.plugin.pages.w2p
+https://dl.dropboxusercontent.com/u/20756661/web2py.plugin.pages_with_languages.w2p
 
 Changelog:
 -----
