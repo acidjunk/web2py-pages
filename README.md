@@ -26,6 +26,12 @@ https://dl.dropboxusercontent.com/u/20756661/web2py.plugin.pages_with_languages.
 
 Changelog:
 -----
+Version 1.1 (develop)
+- Recreated the w2p release script
+- Used welcome app to get an easier workflow (git repo can be cloned and will give you a complete and working web2py app)
+- Fixed language support
+
+-----
 Version 1.0 RC2
 - Fixed the issue with the DAL and a reserved keyword 'page' error. The app should will now install without touching any core web2py welcome/ application file
 
