@@ -10,7 +10,6 @@ Installation:
 To try it; just create a new app from the web2py admin and copy the content of this github folder over it.
 
 Todo:
-- Create a .w2p release
 - Add the extra styling info in one.css file
 - Test
 - Clean up older web2py constructs
@@ -19,6 +18,11 @@ Needed dependencies:
 - gdata for google picasa
 - PIL for scaling and thumbs (ImageMagick support will be added)
 
+You can also use the w2p files (you'll still need the deps.)
+
+w2p:
+https://dl.dropboxusercontent.com/u/20756661/web2py-pages-without-languages.w2p
+https://dl.dropboxusercontent.com/u/20756661/web2py-pages-with-languages.w2p
 
 Changelog:
 -----
