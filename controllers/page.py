@@ -282,7 +282,7 @@ def delPage():
     #Delete page
     del db.page[page_id]
 
-    redirect(URL('page', 'manage'))
+    redirect(URL('page', 'index'))
 
 @auth.requires_membership('admins')
 def deletePageItem():
