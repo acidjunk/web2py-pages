@@ -28,6 +28,7 @@
 {{ if is_admin: }}
 {{=button(T('smartedit'),'showEditable',page.url)}}
 {{=button(T('move page'),'movePage',page.id)}}
+{{=button(T('delete page','delPage',page.id))}}
 {{pass}}
 
 {{ if(page.title.lower()!="home"): }}

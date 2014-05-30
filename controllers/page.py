@@ -241,8 +241,49 @@ def manage():
                              _class="web2py_grid",  
                              formname='web2py_grid')
     return dict(grid=grid)
-    
-    
+
+
+@auth.requires_membership('admins')
+def delPage():
+    page_id = request.args(0)
+
+    page_item=db(db.page_item.page==page_id).select() or redirect(error)
+
+    # Delete page items first!
+    for page_item in page_item:
+        if page_item.tablename=='page_text':
+            del db.page_text[page_item.record_id]
+        elif page_item.tablename=='page_image':
+            del db.page_image[page_item.record_id]
+        elif page_item.tablename=='page_link':
+            del db.page_link[page_item.record_id]
+        elif page_item.tablename=='page_faq':
+            del db.page_faq[page_item.record_id]
+        elif page_item.tablename=='page_dealer':
+            del db.page_dealer[page_item.record_id]
+        elif page_item.tablename=='page_file':
+            del db.page_file[page_item.record_id]
+        elif page_item.tablename=='page_picasa':
+            del db.page_picasa[page_item.record_id]
+        elif page_item.tablename=='page_youtube':
+            del db.page_youtube[page_item.record_id]
+        elif page_item.tablename=='page_facebook':
+            del db.page_facebook[page_item.record_id]
+        elif page_item.tablename=='page_slider':
+            del db.page_slider[page_item.record_id]
+        elif page_item.tablename=='page_form':
+            del db.page_form[page_item.record_id]
+        elif page_item.tablename=='page_fbcomments':
+            del db.page_fbcomments[page_item.record_id]
+        else:
+            #Unknow delete type!
+            redirect(error)
+
+    #Delete page
+    del db.page[page_id]
+
+    redirect(URL('page', 'manage'))
+
 @auth.requires_membership('admins')
 def deletePageItem():
     try:
