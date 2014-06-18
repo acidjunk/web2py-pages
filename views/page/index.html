@@ -2,9 +2,9 @@
 
 <div class="greenbox">
 	<div class="title"><h1>{{=T("All pages")}}</h1></div>
-	<div class="entry">
+	<div class="entry" style="margin-top: 20px; margin-left: 10px;">
 {{for page in pages:}}
-	<li>{{=A(page.title,_href=URL('show/%s' % page.id))}} {{=A('[COPY PAGE]',_href=URL('copyPage/%s' % page.id))}}</li>
+	<li><span style="text-decoration: underline">{{=page.language}}</span> <a href="{{=URL('show/%s' % page.id)}}">{{=page.title}}</a> {{=A('[COPY PAGE]',_href=URL('copyPage/%s' % page.id))}} {{=A('[DEL PAGE]',_href=URL('delPage', args=page.id))}}</li>
 {{pass}}
 
 {{=H3(T("Create new page"))}}

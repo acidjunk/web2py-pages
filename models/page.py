@@ -3,7 +3,7 @@ import os
 #The parent reference could also be done with:
 #    Field('parent', 'reference page'),
 db.define_table('page',
-    Field('language', requires=IS_IN_SET(('nl-nl','en-us'))), #TODO: see if you can use language list from web2py itself
+    Field('language', requires=IS_IN_SET(('nl','en'))), #TODO: see if you can use language list from web2py itself
     Field('parent', type='integer', writable=False,readable=False,  
           label=T('Parent page')),                
     Field('title',default='',label=T("Title"),
@@ -140,9 +140,9 @@ db.define_table('page_form',
    Field('form_type', type='string', label=T('Choose a form to include'), requires=IS_IN_SET(('Support','Question','Demo','Offers','Contactpage'))))
 
 #Add first toplevel page if none exist
-if (db((db.page.parent==0) & (db.page.language=='en-us') & (db.page.isMenuitem==True)).count() == 0):
-    db.page.insert(language='en-us',
+if (db((db.page.parent==0) & (db.page.language=='en') & (db.page.isMenuitem==True)).count() == 0):
+    db.page.insert(language='en',
                    parent=0,
-                   title='Informatie',
-                   short_title='Informatie',
+                   title='Information',
+                   short_title='Information',
                    url='info')

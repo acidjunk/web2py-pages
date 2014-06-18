@@ -42,7 +42,7 @@ def index():
     else:
         response.flash = T('please fill the form')
    
-    pages=db(db.page.id>0).select()
+    pages=db(db.page.id>0).select(orderby=~db.page.language)
     return dict(pages=pages, form=form)
 
 @auth.requires_membership('admins')
@@ -247,7 +247,7 @@ def manage():
 def delPage():
     page_id = request.args(0)
 
-    page_item=db(db.page_item.page==page_id).select() or redirect(error)
+    page_item=db(db.page_item.page == page_id).select()
 
     # Delete page items first!
     for page_item in page_item:
