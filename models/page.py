@@ -2,8 +2,17 @@ import os
 
 #The parent reference could also be done with:
 #    Field('parent', 'reference page'),
+
+def languages():
+    dict = T.get_possible_languages_info(lang=None)
+    languages = []
+    for key in dict.keys():
+        if key != 'default':
+            languages.append(key)
+    return languages
+
 db.define_table('page',
-    Field('language', requires=IS_IN_SET(('nl','en'))), #TODO: see if you can use language list from web2py itself
+    Field('language', requires=IS_IN_SET(languages())),
     Field('parent', type='integer', writable=False,readable=False,  
           label=T('Parent page')),                
     Field('title',default='',label=T("Title"),
@@ -86,7 +95,8 @@ db.define_table('page_facebook',
 db.define_table('page_link',
    Field('title', type='string',
           label=T('Name of the link'),requires=(IS_NOT_EMPTY())),
-   Field('link', type='string',requires=(IS_URL())))
+   Field('link', type='string',requires=(IS_URL())),
+   Field('external', type='boolean', default=False, label=T('This link is an external page')))
 
 db.define_table('page_faq',
    Field('question', type='string',
