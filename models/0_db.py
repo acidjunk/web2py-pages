@@ -1,3 +1,4 @@
+#TODO: remove this when we did some more test with postgres
 real_DAL = DAL
 
 #A hook to get around the DAL check_reserved problem with a table named 'page'

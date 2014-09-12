@@ -1,7 +1,7 @@
 db.define_table('page_item_custom',
     Field('page', db.page, writable=False, readable=False, label=T('Page')),
     Field('page_item', db.page_item, writable=False, readable=False, label=T('Page item')),
-    Field('column', type='string', requires=IS_IN_SET(('full','left','right')), label=T('Alignment')),
+    Field('page_column', type='string', requires=IS_IN_SET(('full','left','right')), label=T('Alignment')),
     Field('title', type='string', label=T('Title')),
     Field('image', type='upload', label=T('Image')),
     Field('background', type='upload', label=T('Background')),

@@ -20,6 +20,7 @@ fi
 echo "Merging files in the new tree"
 # Controllers
 cp -v controllers/page*.py $TARGET_LOCATION/controllers/
+cp -v controllers/plugin_tagging.py $TARGET_LOCATION/controllers/
 # Modules
 cp -v modules/plugin_ckeditor.py $TARGET_LOCATION/modules/
 # Models
