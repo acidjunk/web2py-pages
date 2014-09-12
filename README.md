@@ -10,6 +10,8 @@ Installation:
 To try it; just clone it in a web2py/applications/ folder.
 E.g.: git clone git@github.com:acidjunk/web2py-pages.git pages
 
+Or use the copy_to_app.sh script to copy just the needed files to an existing app.
+
 Todo:
 - Add the extra styling info in one.css file
 - Test
