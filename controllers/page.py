@@ -913,31 +913,37 @@ def getPhotos():
 
 def copyPage():
     pageToCopy = request.args(0)
-    page = db(db.page.id == pageToCopy).select().first()
-    pageItems = db(db.page_item.page == pageToCopy).select()
-    
-    dictInsert = {}
-    #---Parse Page---
-    for key, value in page.iteritems():
-        if not (key == 'update_record') | (key == 'page_item') | (key == 'page_archive') | (key == 'page_item_custom') | (key == 'delete_record'):
-            dictInsert[key] = value
-    dictInsert['title'] = 'COPY_%s' % dictInsert['title']
-    dictInsert['id'] = db(db.page).select(db.page.id.max()).first()[db.page.id.max()] + 1
-    insertedPageId = db.page.bulk_insert([dictInsert])[0]
-    
-    #---Parse Page_items---
-    for dict in pageItems:
-        dictInsert = {}
-        for key, value in dict.iteritems():
-            if not (key == 'update_record') | (key == 'page_item_custom') | (key == 'delete_record'):
-                dictInsert[key] = value
-        if not len(dictInsert) == 0:
-            dictInsert['id'] = db(db.page_item).select(db.page_item.id.max()).first()[db.page_item.id.max()] + 1
-            dictInsert['page'] = insertedPageId
-            dictInsert['record_id'] = copyContent(dictInsert['tablename'],dictInsert['record_id'])
-            db.page_item.bulk_insert([dictInsert])
-            
-    redirect(URL('index'))
+
+    if request.vars.post:
+        page = db(db.page.id == pageToCopy).select().first().as_dict()
+        pageItems = db(db.page_item.page == pageToCopy).select()
+
+        #Modifiing the page values
+        page['title'] = 'COPY_%s' % page['title']
+        page['created_on'] = datetime.datetime.now()
+        page['created_by'] = auth.user_id
+        page['modified_on'] = datetime.datetime.now()
+        page['modified_by'] = auth.user_id
+        del page['id']
+
+        # Adding new page - COPY
+        newPageId = db.page.insert(**page)
+
+        # Looping through page Items
+        for item in pageItems:
+            pageType = db(db[item.tablename].id == item.record_id).select().first().as_dict()
+
+            del pageType['id']
+            newTypeId = db[item.tablename].insert(**pageType)
+
+            db.page_item.insert(
+                page=newPageId,
+                tablename=item.tablename,
+                record_id=newTypeId,
+                order_nr=item.order_nr
+            )
+
+        redirect(URL('index'))
     return dict()
 
 def copyContent(tbName,id):
