@@ -32,7 +32,7 @@ Changelog:
 -----
 Version 1.1 (develop)
 - Recreated the w2p release script
-- Used welcome app to get an easier workflow (git repo can be cloned and will give you a complete and working web2py app)
+- Used welcome app to get an easier workflow (git repo can be cloned and should give you a complete and working web2py app)
 - Fixed language support
 
 -----
